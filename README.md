@@ -2,10 +2,10 @@
 
 A simple ping pong game for two players.
 
-Player 1:
+Player A:
 "W" Key: Go Up\n"S" Key: Go Down
 
-Player 2:
+Player B:
 ↑ Key: Go Up\n↓ Key: Go Down
 
 ![Ping Pong](./assets/pingpong.gif)
