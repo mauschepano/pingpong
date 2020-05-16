@@ -8,4 +8,4 @@ Player 1:
 Player 2:
 ↑ Key: Go Up\n↓ Key: Go Down
 
-![Ping Pong](./assets/gameplay.mov)
+![Ping Pong](./assets/pingpong.gif)
