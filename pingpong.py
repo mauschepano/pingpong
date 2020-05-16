@@ -1,97 +1,96 @@
 import turtle
 
-wn = turtle.Screen()
-wn.title("Ping Pong")
-wn.bgcolor("black")
-wn.setup(width=800, height=600)
-wn.tracer(0)
+# screen
+screen = turtle.Screen()
+screen.title("Ping Pong")
+screen.bgcolor(0.21,0.3,0.26)
+screen.setup(width=800, height=600)
+screen.tracer(0)
+middle_line = turtle.Turtle()
+middle_line.shape("square")
+middle_line.color("white")
+middle_line.shapesize(stretch_wid=100, stretch_len=0.25, outline=None)
+middle_line.goto(0,300)
 
-# Score
+# scores
 score_a = 0
 score_b = 0
 
-# Paddle A
-paddle_a = turtle.Turtle()
-paddle_a.speed(0)
-paddle_a.shape("square")
-paddle_a.color("white")
-paddle_a.shapesize(stretch_wid=5, stretch_len=1)
-paddle_a.penup()
-paddle_a.goto(-350, 0)
+# rackets
+racket_a = turtle.Turtle()
+racket_a.speed(0)
+racket_a.shape("square")
+racket_a.color("white")
+racket_a.shapesize(stretch_wid=6, stretch_len=1, outline=None)
+racket_a.penup()
+racket_a.goto(-350, 0)
+racket_b = turtle.Turtle()
+racket_b.speed(0)
+racket_b.shape("square")
+racket_b.color("white")
+racket_b.shapesize(stretch_wid=6, stretch_len=1, outline=None)
+racket_b.penup()
+racket_b.goto(350, 0)
 
-# Paddle B
-paddle_b = turtle.Turtle()
-paddle_b.speed(0)
-paddle_b.shape("square")
-paddle_b.color("white")
-paddle_b.shapesize(stretch_wid=5, stretch_len=1)
-paddle_b.penup()
-paddle_b.goto(350, 0)
-
-# Ball
+# ball
 ball = turtle.Turtle()
 ball.speed(0)
-ball.shape("square")
+ball.shape("circle")
 ball.color("white")
 ball.penup()
 ball.goto(0, 0)
 ball.dx = 2
 ball.dy = 2
 
-# Pen
+# statistics
 pen = turtle.Turtle()
 pen.speed(0)
-pen.shape("square")
 pen.color("white")
 pen.penup()
 pen.hideturtle()
-pen.goto(0, 260)
-pen.write("Player A: {} Player B: {}".format(score_a, score_b), align="center", font=("Courier",24, "normal"))
+pen.goto(-350,250)
+pen.write("Player A: {}".format(score_a), align="left", font=("Helvetica", 20, "normal"))
+pen.goto(350,250)
+pen.write("Player B: {}".format(score_b), align="right", font=("Helvetica", 20, "normal"))
 
-
-# Functions
-def paddle_a_up():
-    y = paddle_a.ycor()
+# functions
+def racket_a_up():
+    y = racket_a.ycor()
     y += 20
-    paddle_a.sety(y)
+    racket_a.sety(y)
 
-
-def paddle_a_down():
-    y = paddle_a.ycor()
+def racket_a_down():
+    y = racket_a.ycor()
     y -= 20
-    paddle_a.sety(y)
+    racket_a.sety(y)
 
-
-def paddle_b_up():
-    y = paddle_b.ycor()
+def racket_b_up():
+    y = racket_b.ycor()
     y += 20
-    paddle_b.sety(y)
+    racket_b.sety(y)
 
-
-def paddle_b_down():
-    y = paddle_b.ycor()
+def racket_b_down():
+    y = racket_b.ycor()
     y -= 20
-    paddle_b.sety(y)
+    racket_b.sety(y)
 
+# bindings
+screen.listen()
+screen.onkeypress(racket_a_up, "w")
+screen.onkeypress(racket_a_down, "s")
+screen.onkeypress(racket_b_up, "Up")
+screen.onkeypress(racket_b_down, "Down")
 
-# Keyboard bindings
-wn.listen()
-wn.onkeypress(paddle_a_up, "w")
-wn.onkeypress(paddle_a_down, "s")
-wn.onkeypress(paddle_b_up, "Up")
-wn.onkeypress(paddle_b_down, "Down")
-
-# Main game loop
+# Main game
 while True:
-    wn.update()
+    screen.update()
 
-    # Move the ball
+    # Move  ball
     ball.setx(ball.xcor() + ball.dx)
     ball.sety(ball.ycor() + ball.dy)
 
     # Border checking
 
-    # Top and bottom
     if ball.ycor() > 290:
         ball.sety(290)
         ball.dy *= -1
@@ -100,24 +99,28 @@ while True:
         ball.sety(-290)
         ball.dy *= -1
 
-    # Left and right
     if ball.xcor() > 350:
         score_a += 1
         pen.clear()
-        pen.write("Player A: {}  Player B: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
+        pen.goto(-350,250)
+        pen.write("Player A: {}".format(score_a), align="left", font=("Helvetica", 20, "normal"))
+        pen.goto(350,250)
+        pen.write("Player B: {}".format(score_b), align="right", font=("Helvetica", 20, "normal"))
         ball.goto(0, 0)
         ball.dx *= -1
 
     elif ball.xcor() < -350:
         score_b += 1
         pen.clear()
-        pen.write("Player A: {}  Player B: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
+        pen.goto(-350,250)
+        pen.write("Player A: {}".format(score_a), align="left", font=("Helvetica", 20, "normal"))
+        pen.goto(350,250)
+        pen.write("Player B: {}".format(score_b), align="right", font=("Helvetica", 20, "normal"))
         ball.goto(0, 0)
         ball.dx *= -1
 
-    # Paddle and ball collisions
-    if ball.xcor() < -340 and ball.ycor() < paddle_a.ycor() + 50 and ball.ycor() > paddle_a.ycor() - 50:
+    if ball.xcor() < -340 and ball.ycor() < racket_a.ycor() + 50 and ball.ycor() > racket_a.ycor() - 50:
         ball.dx *= -1
 
-    elif ball.xcor() > 340 and ball.ycor() < paddle_b.ycor() + 50 and ball.ycor() > paddle_b.ycor() - 50:
+    elif ball.xcor() > 340 and ball.ycor() < racket_b.ycor() + 50 and ball.ycor() > racket_b.ycor() - 50:
         ball.dx *= -1
